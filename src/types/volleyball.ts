@@ -1,4 +1,4 @@
-export type PlayerRole = 'S1' | 'OH1' | 'MB1' | 'S2' | 'OH2' | 'MB2';
+export type PlayerRole = 'S1' | 'RH1' | 'M1' | 'S2' | 'RH2' | 'M2';
 
 export interface PlayerAssignment {
   role: PlayerRole;
@@ -21,12 +21,12 @@ export interface PlayerPhasePosition {
 }
 
 export interface RotationConfig {
-  rotationNumber: number; // 1 to 6
-  activeSetterRole: PlayerRole; // S1 or S2
+  rotationNumber: number; // 1 t/m 6
+  activeSetterRole: PlayerRole; // S1 of S2
   activeSetterZone: 'P1' | 'P6' | 'P5';
   title: string;
   description: string;
-  // Starting zones (P1, P2, P3, P4, P5, P6) occupied by player roles
+  // Startzones (P1, P2, P3, P4, P5, P6) bezet door spelers
   zoneOrder: {
     p1: PlayerRole;
     p2: PlayerRole;

@@ -9,9 +9,9 @@ interface BenchPlayer {
 }
 
 const DEFAULT_BENCH: BenchPlayer[] = [
-  { name: 'Alixe', position: 'OH (Outside Hitter)', suggestedRoles: ['OH1', 'OH2'] },
-  { name: 'Frieke', position: 'M (Middle Blocker)', suggestedRoles: ['MB1', 'MB2'] },
-  { name: 'Anna', position: 'OH (Outside Hitter)', suggestedRoles: ['OH1', 'OH2'] },
+  { name: 'Alixe', position: 'RH (Receptie-hoek)', suggestedRoles: ['RH1', 'RH2'] },
+  { name: 'Frieke', position: 'M (Midden-speler)', suggestedRoles: ['M1', 'M2'] },
+  { name: 'Anna', position: 'RH (Receptie-hoek)', suggestedRoles: ['RH1', 'RH2'] },
 ];
 
 interface RosterPanelProps {
@@ -39,26 +39,26 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
     setNewKidName('');
   };
 
-  const roles: PlayerRole[] = ['S1', 'OH1', 'MB1', 'S2', 'OH2', 'MB2'];
+  const roles: PlayerRole[] = ['S1', 'RH1', 'M1', 'S2', 'RH2', 'M2'];
 
   return (
     <div className="card shadow-sm border-0 mb-3">
       <div className="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
         <div>
           <h5 className="mb-0 fw-bold text-dark">
-            👥 Team Lineup & Kids Roster
+            👥 Team Opstelling & Spelerslijst
           </h5>
-          <span className="text-muted small">6 Starting Players + 3 Bench Reserves</span>
+          <span className="text-muted small">6 Basisspelers + 3 Wisselspelers (Bank)</span>
         </div>
         <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-          6-2 System (No Libero)
+          6-2 Systeem (Zonder libero)
         </span>
       </div>
 
       <div className="card-body">
-        {/* Starting 6 Lineup Grid */}
+        {/* Basisopstelling 6 spelers */}
         <h6 className="fw-bold text-secondary mb-2 small text-uppercase letter-spacing">
-          Starting 6 Court Assignments
+          Basisopstelling op het veld
         </h6>
         <div className="row g-2 mb-3">
           {roles.map((role) => {
@@ -80,7 +80,7 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
                     <input
                       type="text"
                       className="form-control form-control-sm bg-white fw-bold"
-                      placeholder={`Kid's name for ${role}`}
+                      placeholder={`Naam voor ${role}`}
                       value={playerNames[role]}
                       onChange={(e) => onUpdatePlayer(role, e.target.value)}
                     />
@@ -93,9 +93,9 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
 
         <hr className="my-3 text-muted" />
 
-        {/* Bench Players Section */}
+        {/* Wisselspelers (Bank) */}
         <h6 className="fw-bold text-secondary mb-2 small text-uppercase letter-spacing">
-          🪑 Bench Players (Substitutes)
+          🪑 Wisselspelers (Bank)
         </h6>
         <div className="row g-2 mb-3">
           {DEFAULT_BENCH.map((bench) => (
@@ -108,7 +108,7 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
                   </span>
                 </div>
                 <div className="small text-muted mb-2">
-                  Substitute into court:
+                  Wissel in op het veld:
                 </div>
                 <div className="d-flex gap-1 flex-wrap">
                   {bench.suggestedRoles.map((role) => (
@@ -117,9 +117,9 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
                       type="button"
                       className="btn btn-xs btn-outline-primary"
                       onClick={() => onUpdatePlayer(role, bench.name)}
-                      title={`Substitute ${bench.name} in for ${role} (${playerNames[role]})`}
+                      title={`Wissel ${bench.name} in voor ${role} (${playerNames[role]})`}
                     >
-                      ⇄ Sub in for {role} ({playerNames[role]})
+                      ⇄ Wissel voor {role} ({playerNames[role]})
                     </button>
                   ))}
                 </div>
@@ -130,27 +130,27 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
 
         <hr className="my-3 text-muted" />
 
-        {/* Add kids to team roster pool */}
+        {/* Spelersgroep toevoegen / beheren */}
         <h6 className="fw-bold text-secondary mb-2 small text-uppercase letter-spacing">
-          All Players Squad Pool
+          Alle Spelers van het Team
         </h6>
 
         <form onSubmit={handleAdd} className="input-group mb-2">
           <input
             type="text"
             className="form-control"
-            placeholder="Add another player to the team pool..."
+            placeholder="Voeg een speler toe aan de groep..."
             value={newKidName}
             onChange={(e) => setNewKidName(e.target.value)}
           />
           <button type="submit" className="btn btn-primary px-3">
-            + Add Player
+            + Toevoegen
           </button>
         </form>
 
-        {/* Quick Assign Buttons */}
+        {/* Snel toewijzen */}
         <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
-          <span className="small text-muted fw-semibold">Assign to Court Position:</span>
+          <span className="small text-muted fw-semibold">Wijs toe aan veldpositie:</span>
           <select
             className="form-select form-select-sm w-auto"
             value={selectedRole}
@@ -158,11 +158,11 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
           >
             {roles.map((r) => (
               <option key={r} value={r}>
-                {r} ({ROLE_INFO[r].title}) - currently {playerNames[r]}
+                {r} ({ROLE_INFO[r].title}) - momenteel {playerNames[r]}
               </option>
             ))}
           </select>
-          <span className="small text-muted">(Click a player below to assign them to {selectedRole})</span>
+          <span className="small text-muted">(Klik hieronder op een speler om toe te wijzen aan {selectedRole})</span>
         </div>
 
         <div className="d-flex flex-wrap gap-2">
@@ -177,7 +177,7 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
                 <button
                   type="button"
                   className={`btn ${isCurrentlyStarting ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  title={`Assign ${kid} to ${selectedRole}`}
+                  title={`Wijs ${kid} toe aan ${selectedRole}`}
                   onClick={() => onUpdatePlayer(selectedRole, kid)}
                 >
                   {kid} {isCurrentlyStarting ? `(${startingRole})` : ''}
@@ -185,7 +185,7 @@ const RosterPanel: React.FC<RosterPanelProps> = ({
                 <button
                   type="button"
                   className="btn btn-outline-danger"
-                  title={`Remove ${kid} from pool`}
+                  title={`Verwijder ${kid}`}
                   onClick={() => onRemoveRosterPlayer(kid)}
                 >
                   ×

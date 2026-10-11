@@ -4,7 +4,7 @@ import { PlayerRole, CourtPhase, PositionPoint } from '../../types/volleyball';
 import { ROTATIONS_DATA, SETTING_TARGET, ROLE_INFO } from '../../data/volleyballSystemData';
 
 interface CourtProps {
-  currentRotation: number; // 0 to 5
+  currentRotation: number; // 0 t/m 5
   phase: CourtPhase;
   playerNames: Record<PlayerRole, string>;
   showArrows: boolean;
@@ -22,7 +22,7 @@ const Court: React.FC<CourtProps> = ({
 }) => {
   const rotationConfig = ROTATIONS_DATA[currentRotation];
 
-  // Get active coordinates based on phase
+  // Coördinaten ophalen op basis van fase
   const getCoordinates = (role: PlayerRole): PositionPoint => {
     if (phase === 'base') {
       return rotationConfig.basePositions[role];
@@ -33,13 +33,13 @@ const Court: React.FC<CourtProps> = ({
     return rotationConfig.receivePositions[role];
   };
 
-  // Determine if a role is in the front row in this rotation
+  // Bepalen of speler in voorste rij staat
   const isFrontRow = (role: PlayerRole): boolean => {
     const { p4, p3, p2 } = rotationConfig.zoneOrder;
     return role === p4 || role === p3 || role === p2;
   };
 
-  // Determine receive duty in receive phase
+  // Receptierol bepalen in ontvangstfase
   const getReceiveRole = (role: PlayerRole): 'passer' | 'short' | 'setter' | undefined => {
     if (phase !== 'receive') return undefined;
     if (role === rotationConfig.activeSetterRole) return 'setter';
@@ -48,7 +48,7 @@ const Court: React.FC<CourtProps> = ({
     return undefined;
   };
 
-  // Generate a smooth path for transition arrow
+  // Vloeiende boog voor bewegingspijlen
   const getArrowPath = (start: PositionPoint, end: PositionPoint): string => {
     const dx = end.x - start.x;
     const dy = end.y - start.y;
@@ -61,7 +61,7 @@ const Court: React.FC<CourtProps> = ({
     return `M ${start.x} ${start.y} Q ${mx + offset} ${my} ${end.x} ${end.y}`;
   };
 
-  const allRoles: PlayerRole[] = ['S1', 'OH1', 'MB1', 'S2', 'OH2', 'MB2'];
+  const allRoles: PlayerRole[] = ['S1', 'RH1', 'M1', 'S2', 'RH2', 'M2'];
   const { p1, p2, p3, p4, p5, p6 } = rotationConfig.zoneOrder;
   const currentCoords = {
     p1: getCoordinates(p1),
@@ -83,7 +83,7 @@ const Court: React.FC<CourtProps> = ({
         }}
       >
         <defs>
-          {/* Arrow markers for each player role */}
+          {/* Pijlpunt markers voor elke positie */}
           {allRoles.map((role) => (
             <marker
               key={role}
@@ -108,22 +108,22 @@ const Court: React.FC<CourtProps> = ({
             <polygon points="0 0, 8 3.5, 0 7" fill="#f59e0b" />
           </marker>
 
-          {/* Court surface pattern */}
+          {/* Vloer textuur */}
           <linearGradient id="courtWood" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#d97706" stopOpacity="0.88" />
             <stop offset="100%" stopColor="#b45309" stopOpacity="0.95" />
           </linearGradient>
 
-          {/* Striped net pattern */}
+          {/* Net patroon */}
           <pattern id="netMesh" width="10" height="10" patternUnits="userSpaceOnUse">
             <path d="M 0 0 L 10 10 M 10 0 L 0 10" stroke="#94a3b8" strokeWidth="0.8" opacity="0.4" />
           </pattern>
         </defs>
 
-        {/* Outer floor / Free zone */}
+        {/* Buitenveld */}
         <rect x="20" y="20" width="560" height="460" rx="10" fill="#0f172a" opacity="0.6" />
 
-        {/* Volleyball court surface (Our half: 70 to 530 x 50 to 410) */}
+        {/* Volleybalveld speelhelft (70 tot 530 x 50 tot 410) */}
         <rect
           x="70"
           y="50"
@@ -134,20 +134,20 @@ const Court: React.FC<CourtProps> = ({
           strokeWidth="4"
         />
 
-        {/* Zone Watermark Labels on Court floor */}
-        <g opacity="0.25" fontWeight="800" fontSize="22" fill="#ffffff" textAnchor="middle">
-          {/* Front row zones */}
-          <text x="150" y="115">P4 (LF)</text>
-          <text x="300" y="115">P3 (MF)</text>
-          <text x="450" y="115">P2 (RF)</text>
+        {/* Zone Watermerken op het veld */}
+        <g opacity="0.25" fontWeight="800" fontSize="20" fill="#ffffff" textAnchor="middle">
+          {/* Voorste rij zones */}
+          <text x="150" y="115">P4 (LV)</text>
+          <text x="300" y="115">P3 (MV)</text>
+          <text x="450" y="115">P2 (RV)</text>
 
-          {/* Back row zones */}
-          <text x="150" y="340">P5 (LB)</text>
-          <text x="300" y="360">P6 (MB)</text>
-          <text x="450" y="340">P1 (RB)</text>
+          {/* Achterste rij zones */}
+          <text x="150" y="340">P5 (LA)</text>
+          <text x="300" y="360">P6 (MA)</text>
+          <text x="450" y="340">P1 (RA)</text>
         </g>
 
-        {/* 3-Meter Attack Line */}
+        {/* 3-Meter Aanvalslijn */}
         <line
           x1="70"
           y1="170"
@@ -165,10 +165,10 @@ const Court: React.FC<CourtProps> = ({
           fontWeight="700"
           opacity="0.9"
         >
-          3m ATTACK LINE (SHORT SERVE ZONE)
+          3m AANVALSLIJN (ZONE KORTE OPSLAG)
         </text>
 
-        {/* Baseline / Endline (Server area) */}
+        {/* Achterlijn (Servicelijn) */}
         <line x1="70" y1="410" x2="530" y2="410" stroke="#ffffff" strokeWidth="4" />
         <text
           x="300"
@@ -179,10 +179,10 @@ const Court: React.FC<CourtProps> = ({
           fontWeight="600"
           letterSpacing="1"
         >
-          BASELINE (END LINE)
+          ACHTERLIJN (OPSLAGZONE)
         </text>
 
-        {/* Net at the top */}
+        {/* Het Net aan de bovenzijde */}
         <rect x="50" y="32" width="500" height="18" fill="url(#netMesh)" />
         <rect x="50" y="44" width="500" height="6" fill="#f8fafc" stroke="#334155" strokeWidth="1" />
         <text
@@ -194,15 +194,15 @@ const Court: React.FC<CourtProps> = ({
           fontWeight="900"
           letterSpacing="2"
         >
-          NET (CENTER LINE)
+          NET (MIDDENLIJN)
         </text>
-        {/* Net Antennas */}
+        {/* Antennes op de zijlijnen */}
         <line x1="70" y1="26" x2="70" y2="52" stroke="#ef4444" strokeWidth="4" />
         <line x1="530" y1="26" x2="530" y2="52" stroke="#ef4444" strokeWidth="4" />
 
-        {/* Passing Formation Line Indicator (in Receive phase) */}
+        {/* Passlijn gids (in Receptie fase) */}
         {phase === 'receive' && (
-          <g opacity="0.4">
+          <g opacity="0.45">
             <line
               x1="90"
               y1="285"
@@ -220,12 +220,12 @@ const Court: React.FC<CourtProps> = ({
               fontWeight="bold"
               textAnchor="end"
             >
-              RECEIVE LINE (3 PASSERS)
+              PASSLIJN (3 PASSERS)
             </text>
           </g>
         )}
 
-        {/* Setting Target Zone (Between P2 & P3 at net) */}
+        {/* Spelverdelersplek / Doelgebied aan het net */}
         <g opacity={phase === 'receive' ? 0.9 : 0.45}>
           <circle
             cx={SETTING_TARGET.x}
@@ -244,18 +244,16 @@ const Court: React.FC<CourtProps> = ({
             fontWeight="bold"
             fill="#fbbf24"
           >
-            🏐 Target
+            🏐 Doel
           </text>
         </g>
 
-        {/* Crossing / Overlap Guide Lines (in Receive phase) */}
+        {/* Opstellingslijnen gids */}
         {showCrossingLines && phase === 'receive' && (
           <g opacity="0.35" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="3 3">
-            {/* Front-to-back pairs: P2 to P1, P3 to P6, P4 to P5 */}
             <line x1={currentCoords.p2.x} y1={currentCoords.p2.y} x2={currentCoords.p1.x} y2={currentCoords.p1.y} />
             <line x1={currentCoords.p3.x} y1={currentCoords.p3.y} x2={currentCoords.p6.x} y2={currentCoords.p6.y} />
             <line x1={currentCoords.p4.x} y1={currentCoords.p4.y} x2={currentCoords.p5.x} y2={currentCoords.p5.y} />
-            {/* Left-to-right connections */}
             <line x1={currentCoords.p4.x} y1={currentCoords.p4.y} x2={currentCoords.p3.x} y2={currentCoords.p3.y} />
             <line x1={currentCoords.p3.x} y1={currentCoords.p3.y} x2={currentCoords.p2.x} y2={currentCoords.p2.y} />
             <line x1={currentCoords.p5.x} y1={currentCoords.p5.y} x2={currentCoords.p6.x} y2={currentCoords.p6.y} />
@@ -263,7 +261,7 @@ const Court: React.FC<CourtProps> = ({
           </g>
         )}
 
-        {/* Movement Transition Arrows (during Receive phase) */}
+        {/* Bewegingspijlen (Receptie ➔ Basis) */}
         {showArrows && phase === 'receive' && (
           <g className="transition-arrows">
             {allRoles.map((role) => {
@@ -286,7 +284,7 @@ const Court: React.FC<CourtProps> = ({
               );
             })}
 
-            {/* Special penetration path for the active setter to the net target */}
+            {/* Looplijn voor actieve spelverdeler naar het doel aan het net */}
             {(() => {
               const activeSetterRole = rotationConfig.activeSetterRole;
               const setterStart = rotationConfig.receivePositions[activeSetterRole];
@@ -307,7 +305,7 @@ const Court: React.FC<CourtProps> = ({
           </g>
         )}
 
-        {/* Player Token Circles */}
+        {/* Spelersfiches */}
         {allRoles.map((role) => {
           const coord = getCoordinates(role);
           const activeSetter = role === rotationConfig.activeSetterRole;

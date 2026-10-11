@@ -67,7 +67,7 @@ const PositionCircle: React.FC<PositionCircleProps> = ({
         fill={roleConfig.color}
       />
 
-      {/* Role abbreviation (e.g. S1, OH1, MB2) */}
+      {/* Role abbreviation (e.g. S1, RH1, M2) */}
       <text
         x={0}
         y={-5}
@@ -89,10 +89,10 @@ const PositionCircle: React.FC<PositionCircleProps> = ({
         fontWeight={700}
         fill="#1e293b"
       >
-        {playerName.length > 7 ? `${playerName.slice(0, 6)}…` : playerName || 'Empty'}
+        {playerName.length > 7 ? `${playerName.slice(0, 6)}…` : playerName || 'Leeg'}
       </text>
 
-      {/* Sub-label tag: Receive duty (Passer, 3m Short, Setter) */}
+      {/* Sub-label tag: Receive duty (Passer, 3m Kort, Spelverdeler) */}
       {receiveRole === 'passer' && (
         <g>
           <rect x={-20} y={20} width={40} height={11} rx={5.5} fill="#0284c7" />
@@ -106,16 +106,16 @@ const PositionCircle: React.FC<PositionCircleProps> = ({
         <g>
           <rect x={-22} y={20} width={44} height={11} rx={5.5} fill="#d97706" />
           <text x={0} y={28} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">
-            ⚡ 3M SHORT
+            ⚡ 3M KORT
           </text>
         </g>
       )}
 
       {receiveRole === 'setter' && (
         <g>
-          <rect x={-19} y={20} width={38} height={11} rx={5.5} fill="#eab308" />
-          <text x={0} y={28} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">
-            🏐 SETTER
+          <rect x={-21} y={20} width={42} height={11} rx={5.5} fill="#eab308" />
+          <text x={0} y={28} textAnchor="middle" fontSize={7} fontWeight={800} fill="#ffffff">
+            🏐 VERDELER
           </text>
         </g>
       )}
@@ -139,7 +139,7 @@ const PositionCircle: React.FC<PositionCircleProps> = ({
             fontWeight={700}
             fill="#ffffff"
           >
-            {isFrontRow ? 'FRONT' : 'BACK'}
+            {isFrontRow ? 'VOOR' : 'ACHTER'}
           </text>
         </g>
       )}
