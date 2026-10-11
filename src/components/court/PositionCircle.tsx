@@ -1,53 +1,147 @@
 import React from 'react';
+import { PlayerRole } from '../../types/volleyball';
+import { ROLE_INFO } from '../../data/volleyballSystemData';
 
-interface Props {
+interface PositionCircleProps {
   x: number;
   y: number;
-  label: string;
-  player: string;
+  role: PlayerRole;
+  playerName: string;
+  isActiveSetter?: boolean;
+  isFrontRow?: boolean;
+  receiveRole?: 'passer' | 'short' | 'setter';
   onClick: () => void;
-  color?: string; // Accepts custom stroke color
 }
 
-const PositionCircle: React.FC<Props> = ({ x, y, label, player, onClick, color = '#0d4681' }) => {
+const PositionCircle: React.FC<PositionCircleProps> = ({
+  x,
+  y,
+  role,
+  playerName,
+  isActiveSetter = false,
+  isFrontRow = false,
+  receiveRole,
+  onClick,
+}) => {
+  const roleConfig = ROLE_INFO[role];
+  const radius = 24;
+
   return (
     <g
       transform={`translate(${x}, ${y})`}
-      style={{ cursor: 'pointer' }} // Bootstrap doesn't style SVG elements, use inline
+      style={{ cursor: 'pointer', transition: 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
       onClick={onClick}
     >
+      {/* Outer halo / setter indicator */}
+      {isActiveSetter && (
+        <circle
+          cx={0}
+          cy={0}
+          r={radius + 7}
+          fill="none"
+          stroke="#eab308"
+          strokeWidth={3}
+          strokeDasharray="4 3"
+          className="setter-halo"
+        />
+      )}
+
+      {/* Main token body */}
       <circle
         cx={0}
         cy={0}
-        r={25}
-        fill="#fff"
-        stroke={color}
-        strokeWidth={4}
+        r={radius}
+        fill="#ffffff"
+        stroke={roleConfig.color}
+        strokeWidth={3.5}
+        filter="drop-shadow(0 2px 4px rgba(0,0,0,0.22))"
       />
 
-      {/* Position label */}
+      {/* Role Badge pill background */}
+      <rect
+        x={-18}
+        y={-17}
+        width={36}
+        height={16}
+        rx={8}
+        fill={roleConfig.color}
+      />
+
+      {/* Role abbreviation (e.g. S1, OH1, MB2) */}
       <text
         x={0}
-        y={-6}
+        y={-5}
         textAnchor="middle"
-        fontSize={12}
-        fontWeight={700}
-        fill="#343a40" // Bootstrap text-dark equivalent
+        fontSize={11}
+        fontWeight={800}
+        fill="#ffffff"
+        letterSpacing="0.5"
       >
-        {label}
+        {role}
       </text>
 
       {/* Player name */}
-      {player && (
-        <text
-          x={0}
-          y={15}
-          textAnchor="middle"
-          fontSize={12}
-          fill="#343a40"
-        >
-          {player}
-        </text>
+      <text
+        x={0}
+        y={11}
+        textAnchor="middle"
+        fontSize={11}
+        fontWeight={700}
+        fill="#1e293b"
+      >
+        {playerName.length > 7 ? `${playerName.slice(0, 6)}…` : playerName || 'Empty'}
+      </text>
+
+      {/* Sub-label tag: Receive duty (Passer, 3m Short, Setter) */}
+      {receiveRole === 'passer' && (
+        <g>
+          <rect x={-20} y={20} width={40} height={11} rx={5.5} fill="#0284c7" />
+          <text x={0} y={28} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">
+            🛡️ PASSER
+          </text>
+        </g>
+      )}
+
+      {receiveRole === 'short' && (
+        <g>
+          <rect x={-22} y={20} width={44} height={11} rx={5.5} fill="#d97706" />
+          <text x={0} y={28} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">
+            ⚡ 3M SHORT
+          </text>
+        </g>
+      )}
+
+      {receiveRole === 'setter' && (
+        <g>
+          <rect x={-19} y={20} width={38} height={11} rx={5.5} fill="#eab308" />
+          <text x={0} y={28} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">
+            🏐 SETTER
+          </text>
+        </g>
+      )}
+
+      {!receiveRole && (
+        <g>
+          <rect
+            x={-14}
+            y={21}
+            width={28}
+            height={10}
+            rx={5}
+            fill={isFrontRow ? '#3b82f6' : '#64748b'}
+            opacity={0.9}
+          />
+          <text
+            x={0}
+            y={28.5}
+            textAnchor="middle"
+            fontSize={7.5}
+            fontWeight={700}
+            fill="#ffffff"
+          >
+            {isFrontRow ? 'FRONT' : 'BACK'}
+          </text>
+        </g>
       )}
     </g>
   );

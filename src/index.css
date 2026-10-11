@@ -1,2 +1,45 @@
+@keyframes dashAnimation {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 
+@keyframes pulseHalo {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.96);
+    opacity: 0.7;
+  }
+}
 
+.transition-arrows path {
+  animation: dashAnimation 1.2s linear infinite;
+}
+
+.setter-halo {
+  animation: dashAnimation 2s linear infinite;
+}
+
+.court-container svg text {
+  user-select: none;
+}
+
+/* Custom styling for sleek buttons and cards */
+.btn-xs {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.letter-spacing {
+  letter-spacing: 0.05em;
+}
