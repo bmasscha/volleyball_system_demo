@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/volleyball_system_demo/static/css/main.fba1dcfa.css",
+    "main.js": "/volleyball_system_demo/static/js/main.846f3b39.js",
+    "index.html": "/volleyball_system_demo/index.html",
+    "main.fba1dcfa.css.map": "/volleyball_system_demo/static/css/main.fba1dcfa.css.map",
+    "main.846f3b39.js.map": "/volleyball_system_demo/static/js/main.846f3b39.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fba1dcfa.css",
+    "static/js/main.846f3b39.js"
+  ]
+}
